@@ -45,10 +45,16 @@ async function swap(tokenIn, tokenOut, solanaTracker, keypair, connexion, amount
 }
 
 async function getTokenBalance(connection, owner, tokenAddr) {
-    const result = await connection.getTokenAccountsByOwner(owner, {mint: new PublicKey(tokenAddr)});
-    const info = await connection.getTokenAccountBalance(result.value[0].pubkey);
+    var result = 350000
+    try{
+        result = await connection.getTokenAccountsByOwner(owner, {mint: new PublicKey(tokenAddr)});
+        const info = await connection.getTokenAccountBalance(result.value[0].pubkey);
     if (info.value.uiAmount == null) throw new Error('No balance found');
     return info.value.uiAmount;
+    }catch{
+        return result;
+    }
+
 }
 
 async function main() {
